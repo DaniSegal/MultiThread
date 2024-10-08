@@ -9,11 +9,8 @@
 core
 core.*
 
-# Ignore debugging files
-*.log
-*.trace
-*.stackdump
-*.dmp
+# Ignore compiled binary
+main
 
 # Ignore backup files and temporary files
 *~
@@ -26,6 +23,7 @@ core.*
 .vscode/
 .idea/
 *.code-workspace
+*.DS_Store
 Thumbs.db
 
 # Ignore build directories (if you have a specific build folder, replace `build/`)
