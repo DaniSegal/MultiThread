@@ -26,7 +26,6 @@ core.*
 .vscode/
 .idea/
 *.code-workspace
-*.DS_Store
 Thumbs.db
 
 # Ignore build directories (if you have a specific build folder, replace `build/`)
