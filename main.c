@@ -11,19 +11,17 @@ pthread_mutex_t mutex;
 // Structure to hold thread arguments
 typedef struct {
     int *mailBoxes;
-    int mailBoxesNum;
-    int threadNum;
+    int mailBoxIndex;
 } thread_args_t;
 
 void *function1(void *args) {
     thread_args_t *threadArgs = (thread_args_t *)args;
     int *mailBoxes = threadArgs->mailBoxes;
-    int mailBoxesNum = threadArgs->mailBoxesNum;
-    int threadNum = threadArgs->threadNum;
+    int mailBoxIndex = threadArgs->mailBoxIndex;
 
     for (int i = 0; i < 1000000; i++) {
         pthread_mutex_lock(&mutex);
-        mailBoxes[threadNum % mailBoxesNum]++;
+        mailBoxes[mailBoxIndex]++;
         pthread_mutex_unlock(&mutex);
     }
     return NULL;
@@ -56,8 +54,7 @@ int main(int argc, const char * argv[]) {
     
     for (i = 0; i < NUM_THREADS; i++) {
         threadArgs[i].mailBoxes = mailBoxes;
-        threadArgs[i].mailBoxesNum = mailBoxesNum;
-        threadArgs[i].threadNum = i;
+        threadArgs[i].mailBoxIndex = i % mailBoxesNum;
     }
 
     // Create threads
