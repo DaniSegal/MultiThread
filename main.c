@@ -24,10 +24,14 @@ int main(int argc, const char * argv[]) {
             printf("Failed to create thread number %d\n", i);
             return i;
         }
+        printf("Thread number %d has been created\n", i);
+    }
+    for (i = 0; i < 3; i++) {
         if (pthread_join(threads[i], NULL) != 0) {
             printf("Failed to join thread number %d\n", i);
             return i;
         }
+        printf("Thread number %d has finished execution\n", i);
     }
 
     pthread_mutex_destroy(&mutex);
