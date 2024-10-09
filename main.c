@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <string.h>
 
 #define EXIT_FAILURE 1
-// Global variable to hold the wanted number of threads
 #define NUM_THREADS 7
 
 pthread_mutex_t mutex;
@@ -47,11 +47,9 @@ int main(int argc, const char * argv[]) {
         return EXIT_FAILURE;
     }
     // Initialize mailBoxes to 0
-    for (i = 0; i < mailBoxesNum; i++) {
-        mailBoxes[i] = 0;
-    }
-    //  initialize thread arguments
+    memset(mailBoxes, 0, mailBoxesNum * sizeof(int));
     
+    //  initialize thread arguments
     for (i = 0; i < NUM_THREADS; i++) {
         threadArgs[i].mailBoxes = mailBoxes;
         threadArgs[i].mailBoxIndex = i % mailBoxesNum;
