@@ -15,25 +15,21 @@ void *function1() {
 }
 
 int main(int argc, const char * argv[]) {
-    pthread_t thread1, thread2;
+    int i;
+    pthread_t threads[3];
     pthread_mutex_init(&mutex, NULL);
 
-    if (pthread_create(&thread1, NULL, &function1, NULL) != 0) {
-        printf("Failed to create the first thread\n");
-        return 1;
+    for (i = 0; i < 3; i++) {
+        if (pthread_create(&threads[i], NULL, &function1, NULL) != 0) {
+            printf("Failed to create thread number %d\n", i);
+            return i;
+        }
+        if (pthread_join(threads[i], NULL) != 0) {
+            printf("Failed to join thread number %d\n", i);
+            return i;
+        }
     }
-    if (pthread_create(&thread2, NULL, &function1, NULL) != 0) {
-        printf("Failed to create the second thread\n");
-        return 2;
-    }
-    if (pthread_join(thread1, NULL) != 0) {
-        printf("Failed to join the first thread\n");
-        return 1;
-    }
-    if (pthread_join(thread2, NULL) != 0) {
-        printf("Failed to join the second thread\n");
-        return 2;
-    }
+
     pthread_mutex_destroy(&mutex);
     printf("Mails: %d\n", mails);
 
