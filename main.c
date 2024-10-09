@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <pthread.h>
 
+#define NUM_THREADS 4
+
 int mails = 0;
 pthread_mutex_t mutex;
 
@@ -16,19 +18,22 @@ void *function1() {
 
 int main(int argc, const char * argv[]) {
     int i;
-    pthread_t threads[3];
+    pthread_t threads[NUM_THREADS];
     pthread_mutex_init(&mutex, NULL);
 
-    for (i = 0; i < 3; i++) {
-        if (pthread_create(&threads[i], NULL, &function1, NULL) != 0) {
-            printf("Failed to create thread number %d\n", i);
+
+    for (i = 0; i < NUM_THREADS; i++) {
+        if (pthread_create(&threads[i], NULL, function1, NULL) != 0) {
+            fprintf(stderr, "Failed to create thread number %d\n", i);
+            perror(NULL);
             return i;
         }
         printf("Thread number %d has been created\n", i);
     }
-    for (i = 0; i < 3; i++) {
+    for (i = 0; i < NUM_THREADS; i++) {
         if (pthread_join(threads[i], NULL) != 0) {
-            printf("Failed to join thread number %d\n", i);
+            fprintf(stderr, "Failed to join thread number %d\n", i);
+            perror(NULL);
             return i;
         }
         printf("Thread number %d has finished execution\n", i);
